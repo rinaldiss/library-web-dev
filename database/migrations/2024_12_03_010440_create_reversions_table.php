@@ -15,7 +15,6 @@ return new class extends Migration
         Schema::create('reversions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Loan::class)->nullable();
-            $table->integer("amount_penalty")->nullable();
             $table->date("returned_at")->default(now());
             $table->timestamps();
         });

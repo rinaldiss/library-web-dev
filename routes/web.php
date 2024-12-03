@@ -27,6 +27,7 @@ Route::get('/pencarian/majalah', [LandingPageController::class, 'searchMagazine'
 Route::get('/pencarian/peraturan', [LandingPageController::class, 'searchRegulation'])->name('search.regulation');
 Route::get('/pencarian', [LandingPageController::class, 'search'])->name('search');
 Route::get('/daftar-kunjungan', [LandingPageController::class, 'visitors'])->name('visitors');
+Route::get('/verifikasi/{token}', [LandingPageController::class, 'verify'])->name('verification');
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'postLogin'])->name('login');

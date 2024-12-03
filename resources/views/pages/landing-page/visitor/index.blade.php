@@ -35,6 +35,14 @@
                                         </span>
                                     @enderror
                                 </div>
+                                <div class="form-group">
+                                    <input id="phone" type="text" name="phone" class="form-control form-control-user @error('phone') is-invalid @enderror" placeholder="PHONE">
+                                    @error('phone')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary btn-user">
                                         Submit
@@ -71,4 +79,9 @@
         toastr.success("{{ session('success') }}");
     </script>
 @endif
+@error('failed_verify')
+    <script>
+        toastr.error("{{ $message }}");
+    </script>    
+@enderror
 @endpush

@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Reversion extends Model
 {
     use HasFactory;
-    protected $fillable = ["loan_id","amount_penalty","returned_at"];
+    protected $fillable = ["loan_id","returned_at"];
 }

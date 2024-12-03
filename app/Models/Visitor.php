@@ -9,5 +9,5 @@ class Visitor extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'nip'];
+    protected $fillable = ['name', 'nip',"is_verified","phone","token","expired_at"];
 }

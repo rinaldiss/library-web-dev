@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('nip');
             $table->string('phone',20);
+            $table->boolean('is_verified')->default(false);
+            $table->string('token')->nullable();
+            $table->timestamp('expired_at')->nullable();
             $table->timestamps();
         });
     }
