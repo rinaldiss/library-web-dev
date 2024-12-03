@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Daftar Kunjungan')
+@section('title', 'Peraturan')
 
 @push('style')
     <link href="{{ asset('vendor/datatables/datatables.bootstrap4.min.css') }}" rel="stylesheet">
@@ -10,21 +10,32 @@
 
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-dark">Daftar Kunjungan</h1>
+    <h1 class="h3 mb-0 text-dark">Peminjaman Buku</h1>
 </div>
 
 <div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a href="{{ route('admin.loan.create') }}" class="btn btn-sm btn-primary btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-plus"></i>
+            </span>
+            <span class="text">Tambah Data</span>
+        </a>
+    </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-striped table-bordered nowrap" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th width="25">No</th>
-                        <th>Nama</th>
-                        <th>NIP</th>
+                        <th>Peminjam</th>
                         <th>No HP</th>
+                        <th>Jenis</th>
+                        <th>Judul</th>
+                        <th>Pengarang</th>
+                        <th>Waktu</th>
                         <th>Status</th>
-                        <th width="30">Aksi</th>
+                        <th width="100">Aksi</th>
                     </tr>
                 </thead>
             </table>
@@ -37,17 +48,33 @@
     <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('vendor/datatables/datatables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('vendor/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('vendor/toastr/toastr.min.js') }}"></script>
+    
+    @if(session('success'))
+        <script>
+            toastr.success("{{ session('success') }}");
+        </script>
+    @endif
+    @if(session('error'))
+        <script>
+            toastr.error("{{ session('error') }}");
+        </script>
+    @endif
+    
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{!! route('admin.visitor') !!}',
+                ajax: '{!! route('admin.loan') !!}',
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                    { data: 'name', name: 'name' },
-                    { data: 'nip', name: 'nip' },
+                    { data: 'peminjam', name: 'peminjam' },
                     { data: 'phone', name: 'phone' },
+                    { data: 'type', name: 'type' },
+                    { data: 'judul', name: 'judul' },
+                    { data: 'pengarang', name: 'pengarang' },
+                    { data: 'created_at', name: 'created_at' },
                     { data: 'status', name: 'status' },
                     { 
                         data: 'action', 
@@ -91,7 +118,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '/buku/' + id,
+                            url: "{{ route('admin.loan.delete') }}/"+id,
                             type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}'

@@ -48,8 +48,8 @@
 
     <hr class="sidebar-divider">
 
-    <li class="nav-item {{ Request::is('admin/buku*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('admin.book') }}">
+    <li class="nav-item {{ Request::is('admin/peminjaman-buku*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.loan') }}">
             <i class="fas fa-fw fa-id-card"></i>
             <span>Peminjaman Buku</span>
         </a>

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MagazineController;
 use App\Http\Controllers\RegulationController;
 use App\Http\Controllers\VisitorController;
@@ -64,6 +65,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/buku/tambah', [BookController::class, 'create'])->name('admin.book.create');
         Route::get('/buku/export', [BookController::class, 'export'])->name('admin.book.export');
         Route::get('/buku', [BookController::class, 'index'])->name('admin.book');
+
+        Route::delete('/peminjaman-buku/delete/{id?}', [LoanController::class, 'destroy'])->name('admin.loan.delete');
+        Route::post('/peminjaman-buku', [LoanController::class, 'store'])->name('admin.loan.store');
+        Route::get('/peminjaman-buku/tambah', [LoanController::class, 'create'])->name('admin.loan.create');
+        Route::get('/peminjaman-buku', [LoanController::class, 'index'])->name('admin.loan');
         
         Route::delete('/daftar-kunjungan/{id}', [VisitorController::class, 'destroy'])->name('admin.visitor.delete');
         Route::get('/daftar-kunjungan', [VisitorController::class, 'index'])->name('admin.visitor');

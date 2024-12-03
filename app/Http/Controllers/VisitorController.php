@@ -19,7 +19,10 @@ class VisitorController extends Controller
                     ->addColumn('action', function($row){
                         return $this->getActionColumn($row);
                     })
-                    ->rawColumns(['action'])
+                    ->addColumn('status', function($row){
+                        return ($row->is_verified) ? '<span class="badge text-white bg-success">Verified</span>' : '<span class="badge text-white bg-danger">Not Verified</span>';
+                    })
+                    ->rawColumns(['action','status'])
                     ->make(true);
         }
         return view('pages.admin.visitors.index');
