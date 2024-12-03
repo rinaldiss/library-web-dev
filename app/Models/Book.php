@@ -24,5 +24,6 @@ class Book extends Model
         'place_of_origin',
         'note',
         'dokumen',
+        'stock',
     ];
 }

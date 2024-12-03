@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('classification')->nullable();
             $table->string('place_of_origin')->nullable();
             $table->text('note')->nullable();
+            $table->integer('stock')->default(10);
             $table->timestamps();
         });
     }

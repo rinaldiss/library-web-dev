@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Loan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,11 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('visitors', function (Blueprint $table) {
+        Schema::create('reversions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('nip');
-            $table->string('phone',20);
+            $table->foreignIdFor(Loan::class)->nullable();
+            $table->integer("amount_penalty")->nullable();
+            $table->date("returned_at")->default(now());
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('visitors');
+        Schema::dropIfExists('reversions');
     }
 };

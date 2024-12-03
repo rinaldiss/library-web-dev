@@ -23,5 +23,6 @@ class Magazine extends Model
         'classification',
         'place_of_origin',
         'note',
+        "stock"
     ];
 }

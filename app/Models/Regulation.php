@@ -21,6 +21,7 @@ class Regulation extends Model
         'year_of_publication',
         'classification',
         'place_of_origin',
-        'note'
+        'note',
+        "stock"
     ];
 }
