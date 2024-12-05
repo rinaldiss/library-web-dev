@@ -36,6 +36,7 @@
                         <th width="25">No</th>
                         <th>Judul</th>
                         <th>Pengarang</th>
+                        <th>Stock</th>
                         <th width="100">Aksi</th>
                     </tr>
                 </thead>
@@ -72,6 +73,7 @@
                     { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { data: 'title', name: 'title' },
                     { data: 'author', name: 'author' },
+                    { data: 'stock', name: 'stock' },
                     { 
                         data: 'action', 
                         name: 'action', 
