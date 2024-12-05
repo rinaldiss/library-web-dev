@@ -9,4 +9,14 @@ class Reversion extends Model
 {
     use HasFactory;
     protected $fillable = ["loan_id","returned_at"];
+
+    /**
+     * Get the loan that owns the Reversion
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function loan()
+    {
+        return $this->belongsTo(Loan::class, 'loan_id', 'id');
+    }
 }

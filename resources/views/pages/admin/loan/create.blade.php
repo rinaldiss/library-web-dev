@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Tambah Peraturan')
+@section('title', 'Tambah Peminjaman')
 
 @push('style')
     <link rel="stylesheet" href="{{asset('vendor/bootstrap-datepicker/bootstrap-datepicker.min.css')}}"/>
@@ -9,7 +9,7 @@
 
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-dark">Tambah Peraturan</h1>
+    <h1 class="h3 mb-0 text-dark">Tambah Peminjaman</h1>
 </div>
 
 <div class="card shadow mb-4">
@@ -112,17 +112,6 @@
                         <label for="title">Lama Pinjam (Hari)</label>
                         <input type="text" value="3" name="lama_pinjam" class="form-control  @error('lama_pinjam') is-invalid @enderror">
                         @error('lama_pinjam')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="form-group">
-                        <label for="title">Jumlah Denda Keterlambatan</label>
-                        <input type="text" value="10000" name="amount_penalty" class="form-control  @error('amount_penalty') is-invalid @enderror">
-                        @error('amount_penalty')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

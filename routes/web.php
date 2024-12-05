@@ -8,6 +8,7 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MagazineController;
 use App\Http\Controllers\RegulationController;
+use App\Http\Controllers\ReversionController;
 use App\Http\Controllers\VisitorController;
 
 /*
@@ -32,6 +33,8 @@ Route::get('/verifikasi/{token}', [LandingPageController::class, 'verify'])->nam
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'postLogin'])->name('login');
+
+Route::get('/reminder', [DashboardController::class, 'remind'])->name('remind');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -70,6 +73,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/peminjaman-buku', [LoanController::class, 'store'])->name('admin.loan.store');
         Route::get('/peminjaman-buku/tambah', [LoanController::class, 'create'])->name('admin.loan.create');
         Route::get('/peminjaman-buku', [LoanController::class, 'index'])->name('admin.loan');
+        
+        Route::delete('/pengembalian-buku/delete/{id?}', [ReversionController::class, 'destroy'])->name('admin.reversion.delete');
+        Route::post('/pengembalian-buku', [ReversionController::class, 'store'])->name('admin.reversion.store');
+        Route::get('/pengembalian-buku/tambah', [ReversionController::class, 'create'])->name('admin.reversion.create');
+        Route::get('/pengembalian-buku', [ReversionController::class, 'index'])->name('admin.reversion');
         
         Route::delete('/daftar-kunjungan/{id}', [VisitorController::class, 'destroy'])->name('admin.visitor.delete');
         Route::get('/daftar-kunjungan', [VisitorController::class, 'index'])->name('admin.visitor');

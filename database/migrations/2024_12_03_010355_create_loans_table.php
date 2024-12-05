@@ -22,7 +22,6 @@ return new class extends Migration
             $table->foreignIdFor(Regulation::class)->nullable();
             $table->foreignIdFor(Visitor::class);
             $table->enum("type",["book","magazine","regulation"]);
-            $table->integer("amount_penalty")->default(0);
             $table->timestamp("loan_at")->default(now());
             $table->timestamp("expired_at")->default(now());
             $table->enum("status",["on_going","finished"]);

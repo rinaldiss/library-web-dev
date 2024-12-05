@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Loan;
 use App\Models\Magazine;
 use App\Models\Regulation;
 use GuzzleHttp\Client;
@@ -16,6 +17,22 @@ class DashboardController extends Controller
         $magazines = Magazine::count();
         $regulations = Regulation::count();
         return view('pages.admin.dashboard', compact('books', 'magazines', 'regulations'));
+    }
+
+    public function remind(){
+        $data = Loan::with('visitor')->where('status','on_going')->get();
+        foreach ($data as $item) {
+            if (date('Y-m-d') == date('Y-m-d',strtotime($item->expired_at." - 1 days"))) {
+        $message = "
+*Halo {$item->visitor->name}*,
+Reminder!!
+Segera Lakuakn Pengembalian :
+=========================
+Terimakasih!*";            
+$this->sendMessage($item->visitor->phone,$message);
+            }
+        }
+                return true;        
     }
 
 

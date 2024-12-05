@@ -50,8 +50,14 @@
 
     <li class="nav-item {{ Request::is('admin/peminjaman-buku*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.loan') }}">
-            <i class="fas fa-fw fa-id-card"></i>
+            <i class="fas fa-fw fa-angle-double-right"></i>
             <span>Peminjaman Buku</span>
+        </a>
+    </li>
+    <li class="nav-item {{ Request::is('admin/pengembalian-buku*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.reversion') }}">
+            <i class="fas fa-fw fa-angle-double-left"></i>
+            <span>Pengembalian Buku</span>
         </a>
     </li>
 

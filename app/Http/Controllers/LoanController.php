@@ -97,12 +97,28 @@ class LoanController extends Controller
         $loan = Loan::create($data);
         if ($loan) {
             if ($loan->type == "book") {
-                Book::where("id",$loan->book_id)->decrement("stock",1);
+                $dt = Book::where("id",$loan->book_id)->first();
+                $dt->decrement("stock",1);
             }else if ($loan->type == "magazine") {
-                Magazine::where("id",$loan->magazine_id)->decrement("stock",1);
+                $dt = Magazine::where("id",$loan->magazine_id)->first();
+                $dt->decrement("stock",1);
             }else if ($loan->type == "regulation") {
-                Regulation::where("id",$loan->regulation_id)->decrement("stock",1);
+                $dt = Regulation::where("id",$loan->regulation_id)->first();
+                $dt->decrement("stock",1);
             }
+            $wa = new DashboardController();
+            $message = "
+*Halo {$loan->visitor->name}*,
+Berhasil Peminjaman
+Detail Peminjaman :
+=========================
+*Jenis:* ".$loan->type."
+*Judul:* ".$dt->title."
+*Pengarang:* ".$dt->title."
+*Tanggal Peminjaman:* ".date('d-m-Y H:i',strtotime($loan->loan_at))."
+=========================
+Terimakasih!*";            
+            $wa->sendMessage($loan->visitor->phone,$message);
         }
         return redirect()->route('admin.loan')->with('success', 'Peminjaman buku berhasil dilakukan');
     }
@@ -141,7 +157,6 @@ class LoanController extends Controller
             'magazine_id' => '',
             'regulation_id' => '',
             'type' => 'required',
-            'amount_penalty' => 'required|numeric',
             'loan_at' => 'required',
             'lama_pinjam' => 'required|numeric',
         ];
@@ -162,7 +177,6 @@ class LoanController extends Controller
             'book_id' => 'Buku',
             'magazine_id' => 'Majalah',
             'regulation_id' => 'Peraturan',
-            'amount_penalty' => 'Denda Keterlambatan',
             'loan_at' => 'Waktu Pinjam',
             'type' => 'Jenis Peminjaman',
             'lama_pinjam' => 'Lama Peminjaman',
