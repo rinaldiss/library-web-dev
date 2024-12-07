@@ -22,10 +22,12 @@ class LoanController extends Controller
                     ->addColumn('action', function($row){
                         if ($row->status == "on_going") {
                             return $this->getActionColumn($row);
+                        }else{
+                            return '<button class="btn btn-success btn-sm" disabled>Complete</button>';
                         }
                     })
                     ->addColumn('peminjam', function($row){
-                        return $row->visitor->name. " - " .$row->visitor->nip;
+                        return $row->visitor->name;
                     })
                     ->addColumn('phone', function($row){
                         return $row->visitor->phone;

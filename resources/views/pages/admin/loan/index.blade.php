@@ -37,7 +37,7 @@
                         <th>Status</th>
                         <th width="100">Aksi</th>
                     </tr>
-                </thead>
+                </thead>                
             </table>
         </div>
     </div>

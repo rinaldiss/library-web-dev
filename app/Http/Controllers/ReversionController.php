@@ -21,10 +21,10 @@ class ReversionController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         // return $this->getActionColumn($row);
-                        return "-";
+                        return '<button class="btn btn-success btn-sm" disabled>Completed</button>';
                     })
                     ->addColumn('peminjam', function($row){
-                        return $row->loan->visitor->name. " - " .$row->loan->visitor->nip;
+                        return $row->loan->visitor->name;
                     })
                     ->addColumn('phone', function($row){
                         return $row->loan->visitor->phone;
@@ -93,6 +93,7 @@ class ReversionController extends Controller
             }else if ($row->type == "regulation") {
                 $data = Regulation::find($row->regulation_id);
             }
+            $selisih = date_diff(date_create(date('Y-m-d H:i',strtotime($request->returned_at))),date_create(date('Y-m-d H:i',strtotime($row->loan_at))));
             return response()->json([
                 "success" => true,
                 "data" => [
@@ -100,7 +101,7 @@ class ReversionController extends Controller
                     "title" => $data->title,
                     "author" => ($data->author == null) ? "-" : $data->author,
                     "loan_at" => $row->loan_at,
-                    "amount_penalty" => (date('Y-m-d H:i',strtotime($request->returned_at)) > date('Y-m-d H:i',strtotime($row->loan_at))) ? 10000 : 0
+                    "amount_penalty" => (date('Y-m-d H:i',strtotime($request->returned_at)) > date('Y-m-d H:i',strtotime($row->loan_at))) ? 10000*$selisih->days : 0
                 ]
             ]);
         }
@@ -117,6 +118,7 @@ class ReversionController extends Controller
         }
         $reversion = Reversion::create([
             'loan_id' => $request->loan_id,
+            'penalty' => $request->amount_penalty,
             'returned_at' => $request->returned_at,
         ]);
         if ($reversion) {
@@ -143,7 +145,7 @@ Detail Pengembalian :
 *Judul:* ".$dt->title."
 *Pengarang:* ".$dt->title."
 *Tanggal Pengembalian:* ".date('d-m-Y H:i',strtotime($reversion->returned_at))."
-*Denda:* ".number_format($reversion->amount_penalty,0,',','.')."
+*Denda:* ".number_format($reversion->penalty,0,',','.')."
 =========================
 Terimakasih!*";            
             $wa->sendMessage($loan->visitor->phone,$message);

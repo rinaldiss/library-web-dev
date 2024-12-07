@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reversion extends Model
 {
     use HasFactory;
-    protected $fillable = ["loan_id","returned_at"];
+    protected $fillable = ["loan_id","penalty","returned_at"];
 
     /**
      * Get the loan that owns the Reversion

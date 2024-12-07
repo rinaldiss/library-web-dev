@@ -19,11 +19,11 @@
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="form-group">
-                        <label for="title">Visitor</label>
+                        <label for="title">Peminjam</label>
                         <select name="visitor_id" id="visitor" class="form-control @error('visitor_id') is-invalid @enderror">
-                            <option value="">--Pilih Visitor--</option>
+                            <option value="">--Pilih Peminjam--</option>
                             @foreach ($visitor as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }} - {{ $item->nip }}</option>
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
                         </select>
                         @error('visitor_id')
@@ -110,7 +110,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label for="title">Lama Pinjam (Hari)</label>
-                        <input type="text" value="3" name="lama_pinjam" class="form-control  @error('lama_pinjam') is-invalid @enderror">
+                        <input type="text" value="1" name="lama_pinjam" class="form-control  @error('lama_pinjam') is-invalid @enderror">
                         @error('lama_pinjam')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
