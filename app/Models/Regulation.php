@@ -22,6 +22,7 @@ class Regulation extends Model
         'classification',
         'place_of_origin',
         'note',
+        'dokumen',
         "stock"
     ];
 }

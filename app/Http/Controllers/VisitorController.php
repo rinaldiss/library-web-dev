@@ -13,16 +13,22 @@ class VisitorController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Visitor::orderBy('id', 'desc')->get();
+            $data = Visitor::with('member')->orderBy('created_at', 'desc')->get();
             return DataTables::of($data)
                     ->addIndexColumn()
+                    ->addColumn('name', function($row){
+                        return $row->member->name;
+                    })
+                    ->addColumn('phone', function($row){
+                        return $row->member->phone;
+                    })
                     ->addColumn('action', function($row){
                         return $this->getActionColumn($row);
                     })
-                    ->addColumn('status', function($row){
-                        return ($row->is_verified) ? '<span class="badge text-white bg-success">Verified</span>' : '<span class="badge text-white bg-danger">Not Verified</span>';
+                    ->addColumn('created_at', function($row){
+                        return date('d-m-Y H:i:s',strtotime($row->created_at));
                     })
-                    ->rawColumns(['action','status'])
+                    ->rawColumns(['action'])
                     ->make(true);
         }
         return view('pages.admin.visitors.index');
@@ -34,4 +40,16 @@ class VisitorController extends Controller
 
         return "<button type='button' class='btn btn-sm btn-danger btn-delete' data-id='$id'><i class='fa fa-trash'></i></button>";
     } 
+
+    public function destroy($id)
+    {
+        $id = Crypt::decrypt($id);
+        $item = Visitor::find($id);
+        if ($item) {
+            $item->delete();
+            return response()->json(['success' => 'Daftar pengunjung berhasil dihapus.']);
+        } else {
+            return response()->json(['error' => 'Item not found.'], 404);
+        }
+    }
 }

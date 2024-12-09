@@ -116,7 +116,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '/peraturan/' + id,
+                            url: "{{ route('admin.regulation.delete') }}/"+id,
                             type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}'

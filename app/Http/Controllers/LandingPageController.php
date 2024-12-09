@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Magazine;
+use App\Models\Member;
 use App\Models\Regulation;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
@@ -37,7 +38,10 @@ class LandingPageController extends Controller
                 ->addColumn('action', function($row) {
                     return $this->getAction($row);
                 })
-                ->rawColumns(['action'])
+                ->addColumn('dokumen', function($row) {
+                    return $this->getActionDokumen($row);
+                })
+                ->rawColumns(['action','dokumen'])
                 ->make(true);
         }
 
@@ -53,7 +57,10 @@ class LandingPageController extends Controller
                 ->addColumn('action', function($row) {
                     return $this->getAction($row);
                 })
-                ->rawColumns(['action'])
+                ->addColumn('dokumen', function($row) {
+                    return $this->getActionDokumen($row);
+                })
+                ->rawColumns(['action','dokumen'])
                 ->make(true);
         }
 
@@ -69,7 +76,10 @@ class LandingPageController extends Controller
                 ->addColumn('action', function($row) {
                     return $this->getAction($row);
                 })
-                ->rawColumns(['action'])
+                ->addColumn('dokumen', function($row) {
+                    return $this->getActionDokumen($row);
+                })
+                ->rawColumns(['action','dokumen'])
                 ->make(true);
         }
 
@@ -78,9 +88,23 @@ class LandingPageController extends Controller
 
     protected function getAction($row): string
     {
-        $id = Crypt::encrypt($row->id);
+        $url = ($row->dokumen == null) ? "#" : asset('storage/'.$row->dokumen);
+        return "<a class='btn btn-sm btn-secondary' target='_blank' href='".$url."'><i class='fa fa-eye'></i></a>";
+    }
+    
+    protected function getActionDokumen($row): string
+    {
+        if ($row->dokumen == null) {
+            return "<a class='btn btn-sm btn-danger' href='#'>No Docs</a>";
+        } else {
+            return "<a class='btn btn-sm btn-success' download href='".asset('storage/'.$row->dokumen)."'>Download</a>";
+        }
+        
+    }
 
-        return "<a class='btn btn-sm btn-secondary' data-attr='$id'><i class='fa fa-eye'></i></a>";
+    public function members()
+    {
+        return view('pages.landing-page.member.index');
     }
 
     public function visitors()
@@ -88,12 +112,11 @@ class LandingPageController extends Controller
         return view('pages.landing-page.visitor.index');
     }
 
-    public function storeVisitors(Request $request)
+    public function storeMembers(Request $request)
     {
         $rules = [
             'name' => 'required|max:255',
-            'nip' => 'required|max:255',
-            'phone' => 'required|numeric|unique:visitors,phone|max_digits:20',
+            'phone' => 'required|numeric|unique:members,phone|max_digits:20',
         ];
         $messages = [
             'required' => ':attribute harus diisi',
@@ -104,14 +127,12 @@ class LandingPageController extends Controller
 
         $attributes = [
             'name' => 'Nama',
-            'nip' => 'NIP',
             "phone" => "No HP",
         ];
 
         $this->validate($request, $rules, $messages, $attributes);
-        $data = Visitor::create([
+        $data = Member::create([
             'name' => $request->name,
-            'nip' => $request->nip,
             'phone' => $request->phone,
             "token" => Str::random(64),
             "expired_at" => date('Y-m-d H:i:s',strtotime(" + 1 days"))
@@ -127,44 +148,73 @@ Silahkan verifikasi nomor anda dengan klik link berikut :
 *Link berlaku 1 hari, Terimakasih!*";
             $this->whatsapp->sendMessage($data->phone,$message);
         }
-        return redirect()->back()->with('success', 'Kunjungan berhasil ditambahkan');
+        return redirect()->back()->with('success', 'Berhasil mendaftar, silahkan verifikasi untuk dapat melakukan kunjungan.');
+    }
+
+    public function storeVisitors(Request $request)
+    {
+        $rules = [
+            'phone' => 'required|numeric|max_digits:20',
+        ];
+        $messages = [
+            'required' => ':attribute harus diisi',
+            'max' => ':attribute maksimal :max karakter',
+            'numeric' => ':attribute harus berupa angka',
+        ];
+
+        $attributes = [
+            "phone" => "No HP",
+        ];
+
+        $this->validate($request, $rules, $messages, $attributes);
+        $cekPhone = Member::where('phone',$request->phone)->first();
+        if (empty($cekPhone)) {
+            return redirect()->back()->withErrors(["failed_verify" => "No HP tidak tersedia, silahkan daftar terlebih dahulu"]);
+        }else if(!$cekPhone->is_verified){
+            $this->resendVerify($cekPhone->id);
+            return redirect()->back()->withErrors(["failed_verify" => "Keanggotan belum terverifikasi, berhasil mengirimkan link verifikasi ke whatsapp."]);
+        }
+        $data = Visitor::create([
+            'member_id' => $cekPhone->id,
+        ]);
+        return redirect()->back()->with('success', 'Terimakasih atas kunjungannya, silahkan meminjam buku.');
     }
 
     public function verify(Request $request){
         if ($request->token == null) {
-            return redirect(route('visitors'))->withErrors(["failed_verify" => "Parameter token wajib diisi!"]);
+            return redirect(route('members'))->withErrors(["failed_verify" => "Parameter token wajib diisi!"]);
         }
-        $data = Visitor::where('token',$request->token)->first();
+        $data = Member::where('token',$request->token)->first();
         if (empty($data)) {
-            return redirect(route('visitors'))->withErrors(["failed_verify" => "Token tidak valid!"]);
+            return redirect(route('members'))->withErrors(["failed_verify" => "Token tidak valid!"]);
         }else if (date('Y-m-d H:i:s') > date('Y-m-d H:i:s',strtotime($data->expired_at))) {
             $this->resendVerify($data->id);
-            return redirect(route('visitors'))->withErrors(["failed_verify" => "URL kedaluwarsa, Link baru telah dikirimkan."]);
+            return redirect(route('members'))->withErrors(["failed_verify" => "URL kedaluwarsa, Link baru telah dikirimkan."]);
         }else{
             $data->update([
                 "is_verified" => true,
                 "token" => null,
                 "expired_at" => null
             ]);
-            return redirect()->back()->with('success', 'Verifikasi berhasil, anda dapat meminjam buku sekarang!');
+            return redirect(route('visitors'))->with('success', 'Verifikasi berhasil, anda dapat meminjam buku sekarang!');
         }
     }
 
-    public function resendVerify(Visitor $visitor){
-        $visitor->update([
+    public function resendVerify(Member $member){
+        $member->update([
             "token" => Str::random(64),
             "expired_at" => date('Y-m-d H:i:s',strtotime(" + 1 days"))
         ]);
-        if ($visitor) {
+        if ($member) {
 $message = "
-*Halo {$visitor->name}*,
+*Halo {$member->name}*,
 Terimakasih Telah Mendaftar
 Silahkan verifikasi nomor anda dengan klik link berikut :
 =========================
-".route('verification',$visitor->token)."
+".route('verification',$member->token)."
 =========================
 *Link berlaku 1 hari, Terimakasih!*";
-            $this->whatsapp->sendMessage($visitor->phone,$message);
+            $this->whatsapp->sendMessage($member->phone,$message);
         }
     }
 }

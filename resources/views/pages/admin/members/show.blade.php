@@ -96,7 +96,7 @@
                 <div class="form-group">
                     <label>Dokumen</label>
                     <br>
-                    <a href="{{ asset('storage/' . $book->dokumen) }}" class="btn btn-primary btn-sm float-end" download>Download</a>
+                    <a href="{{ asset('file/' . $book->dokumen) }}" class="btn btn-primary btn-sm float-end" download>Download</a>
                 </div>
             </div>
         </div>

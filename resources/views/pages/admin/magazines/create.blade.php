@@ -13,7 +13,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-body">
-        <form action="{{ route('admin.magazine.store') }}" method="POST">
+        <form action="{{ route('admin.magazine.store') }}" enctype="multipart/form-data" method="POST">
             @csrf
             <div class="row">
                 <div class="col-md-12">
@@ -153,6 +153,17 @@
                         <label for="note">Keterangan</label>
                         <textarea type="text" class="form-control @error('note') is-invalid @enderror" id="note" name="note">{{ old('note') }}</textarea>
                         @error('note')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="dokumen">Dokumen</label>
+                        <input type="file" class="form-control" name="dokumen" value="{{ old('dokumen') }}">
+                        @error('dokumen')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

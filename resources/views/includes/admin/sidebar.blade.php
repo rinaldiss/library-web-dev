@@ -66,6 +66,12 @@
             <i class="fas fa-fw fa-walking"></i>
             <span>Daftar Kunjungan</span>
         </a>
+    </li>    
+    <li class="nav-item {{ Request::is('admin/anggota*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.member') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Daftar Anggota</span>
+        </a>
     </li>
     <!-- Nav Item - Pages Collapse Menu -->
     {{-- <li class="nav-item">

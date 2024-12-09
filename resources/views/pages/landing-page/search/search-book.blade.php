@@ -28,7 +28,7 @@ Pencarian Buku
                             <div class="card shadow mb-4">
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-sm table-striped table-bordered nowrap" id="dataTableSearch" width="100%" cellspacing="0">
+                                        <table class="table w-100 table-sm table-striped table-bordered nowrap" id="dataTableSearch" width="100%" cellspacing="0">
                                             <thead>
                                                 <tr>
                                                     <th width="25">No</th>
@@ -37,6 +37,7 @@ Pencarian Buku
                                                     <th>Penerbit</th>
                                                     <th>Tahun Terbit</th>
                                                     <th>Dokumen</th>
+                                                    <th>Stock</th>
                                                     <th width="30">Aksi</th>
                                                 </tr>
                                             </thead>
@@ -71,16 +72,8 @@ Pencarian Buku
                     { 
                         data: 'dokumen', 
                         name: 'dokumen',
-                        render: function(data, type, row) {
-                            if (data) {
-                                // If the document exists, show the download button
-                                return '<a href="{{ asset('file/') }}/' + data + '" class="btn btn-primary btn-sm" download>Download</a>';
-                            } else {
-                                // If no document, show "No Document" message
-                                return 'No Document';
-                            }
-                        }
                     },
+                    { data: 'stock', name: 'stock'},
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ],
                 language: {

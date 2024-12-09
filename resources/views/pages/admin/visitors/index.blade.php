@@ -21,9 +21,8 @@
                     <tr>
                         <th width="25">No</th>
                         <th>Nama</th>
-                        <th>NIP</th>
                         <th>No HP</th>
-                        <th>Status</th>
+                        <th>Waktu Kunjungan</th>
                         <th width="30">Aksi</th>
                     </tr>
                 </thead>
@@ -46,9 +45,8 @@
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { data: 'name', name: 'name' },
-                    { data: 'nip', name: 'nip' },
                     { data: 'phone', name: 'phone' },
-                    { data: 'status', name: 'status' },
+                    { data: 'created_at', name: 'created_at' },
                     { 
                         data: 'action', 
                         name: 'action', 
@@ -91,7 +89,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '/buku/' + id,
+                            url: "{{ route('admin.visitor.delete') }}/"+id,
                             type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}'

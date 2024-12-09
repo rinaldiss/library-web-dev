@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Member;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('visitors', function (Blueprint $table) {
+        Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Member::class);
+            $table->string('name');
+            $table->string('phone',20);
+            $table->boolean('is_verified')->default(false);
+            $table->string('token')->nullable();
+            $table->timestamp('expired_at')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('visitors');
+        Schema::dropIfExists('members');
     }
 };

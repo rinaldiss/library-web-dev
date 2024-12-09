@@ -6,6 +6,7 @@ use App\Models\Regulation;
 use App\Exports\RegulationExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -47,6 +48,11 @@ class RegulationController extends Controller
     {
         $this->validate($request, $this->rules(), $this->messages(), $this->attributes());
         $data = $request->all();
+        if ($request->dokumen) {
+            $dokumen = $request->dokumen;
+            $nama_dokumen = 'FT' . date('YmdHis') . '.' . $dokumen->getClientOriginalExtension();
+            $data['dokumen'] = $request->dokumen->storeAs('dokumen-peraturan',$nama_dokumen);
+        }
         Regulation::create($data);
         return redirect()->route('admin.regulation')->with('success', 'Buku Induk Peraturan berhasi ditambahkan');
     }
@@ -63,7 +69,16 @@ class RegulationController extends Controller
         $id = Crypt::decrypt($id);
         $regulation = Regulation::find($id);
         $this->validate($request, $this->rules(), $this->messages(), $this->attributes());
-        $regulation->update($request->all());
+        $data = $request->all();
+        if ($request->dokumen) {
+            $dokumen = $request->dokumen;
+            $nama_dokumen = 'FT' . date('YmdHis') . '.' . $dokumen->getClientOriginalExtension();
+            $data['dokumen'] = $request->dokumen->storeAs('dokumen-peraturan',$nama_dokumen);
+            if ($regulation->dokumen != null) {
+                Storage::delete($regulation->dokumen);
+            }
+        }
+        $regulation->update($data);
 
         return redirect()->route('admin.regulation')->with('success', 'Buku Induk Peraturan berhasi diubah');
     }
@@ -80,6 +95,7 @@ class RegulationController extends Controller
         $id = Crypt::decrypt($id);
         $item = Regulation::find($id);
         if ($item) {
+            Storage::delete($item->dokumen);
             $item->delete();
             return response()->json(['success' => 'Item deleted successfully.']);
         } else {

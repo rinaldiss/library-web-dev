@@ -116,7 +116,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '/majalah/' + id,
+                            url: "{{ route('admin.magazine.delete') }}/"+id,
                             type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}'

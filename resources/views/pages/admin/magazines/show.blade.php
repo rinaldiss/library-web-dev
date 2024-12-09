@@ -92,6 +92,13 @@
                     <textarea type="text" class="form-control" disabled>{{ $magazine->note }}</textarea>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Dokumen</label>
+                    <br>
+                    <a href="{{ asset('storage/' . $magazine->dokumen) }}" class="btn btn-primary btn-sm float-end" download>Download</a>
+                </div>
+            </div>
         </div>
         <a href="{{ route('admin.magazine') }}" class="btn btn-secondary btn-icon-split">
             <span class="icon text-white-50">

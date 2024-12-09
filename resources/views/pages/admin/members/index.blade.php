@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Buku')
+@section('title', 'Anggota')
 
 @push('style')
     <link href="{{ asset('vendor/datatables/datatables.bootstrap4.min.css') }}" rel="stylesheet">
@@ -10,18 +10,12 @@
 
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-dark">Buku</h1>
-    <a href="{{ route('admin.book.export') }}" class="btn btn-sm btn-primary btn-icon-split">
-        <span class="icon text-white-50">
-            <i class="fas fa-download"></i>
-        </span>
-        <span class="text">Export</span>
-    </a>
+    <h1 class="h3 mb-0 text-dark">Anggota</h1>
 </div>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <a href="{{ route('admin.book.create') }}" class="btn btn-sm btn-primary btn-icon-split">
+        <a href="{{ route('admin.member.create') }}" class="btn btn-sm btn-primary btn-icon-split">
             <span class="icon text-white-50">
                 <i class="fas fa-plus"></i>
             </span>
@@ -34,9 +28,9 @@
                 <thead>
                     <tr>
                         <th width="25">No</th>
-                        <th>Judul</th>
-                        <th>Pengarang</th>
-                        <th>Stock</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Status</th>
                         <th width="100">Aksi</th>
                     </tr>
                 </thead>
@@ -68,12 +62,12 @@
             $('#dataTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{!! route('admin.book') !!}',
+                ajax: '{!! route('admin.member') !!}',
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                    { data: 'title', name: 'title' },
-                    { data: 'author', name: 'author' },
-                    { data: 'stock', name: 'stock' },
+                    { data: 'name', name: 'name' },
+                    { data: 'phone', name: 'phone' },
+                    { data: 'status', name: 'status' },
                     { 
                         data: 'action', 
                         name: 'action', 
@@ -116,7 +110,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "{{ route('admin.book.delete') }}/"+id,
+                            url: "{{ route('admin.member.delete') }}/"+id,
                             type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}'

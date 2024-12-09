@@ -6,6 +6,7 @@ use App\Models\Magazine;
 use App\Exports\MagazineExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -47,6 +48,11 @@ class MagazineController extends Controller
     {
         $this->validate($request, $this->rules(), $this->messages(), $this->attributes());
         $data = $request->all();
+        if ($request->dokumen) {
+            $dokumen = $request->dokumen;
+            $nama_dokumen = 'FT' . date('YmdHis') . '.' . $dokumen->getClientOriginalExtension();
+            $data['dokumen'] = $request->dokumen->storeAs('dokumen-majalah',$nama_dokumen);
+        }
         Magazine::create($data);
         return redirect()->route('admin.magazine')->with('success', 'Buku Induk Majalah berhasi ditambahkan');
     }
@@ -63,7 +69,16 @@ class MagazineController extends Controller
         $id = Crypt::decrypt($id);
         $magazine = Magazine::find($id);
         $this->validate($request, $this->rules(), $this->messages(), $this->attributes());
-        $magazine->update($request->all());
+        $data = $request->all();
+        if ($request->dokumen) {
+            $dokumen = $request->dokumen;
+            $nama_dokumen = 'FT' . date('YmdHis') . '.' . $dokumen->getClientOriginalExtension();
+            $data['dokumen'] = $request->dokumen->storeAs('dokumen-majalah',$nama_dokumen);
+            if ($magazine->dokumen != null) {
+                Storage::delete($magazine->dokumen);
+            }
+        }
+        $magazine->update($data);
 
         return redirect()->route('admin.magazine')->with('success', 'Buku Induk Majalah berhasi diubah');
     }
@@ -80,6 +95,7 @@ class MagazineController extends Controller
         $id = Crypt::decrypt($id);
         $item = Magazine::find($id);
         if ($item) {
+            Storage::delete($item->dokumen);
             $item->delete();
             return response()->json(['success' => 'Item deleted successfully.']);
         } else {
@@ -107,6 +123,7 @@ class MagazineController extends Controller
             'year_of_publication' => 'nullable|integer',
             'classification' => 'nullable|max:255',
             'place_of_origin' => 'nullable|max:255',
+            'dokumen' => 'mimes:pdf',
             'note' => 'nullable|max:1000',
         ];
     }
@@ -118,6 +135,7 @@ class MagazineController extends Controller
             'max' => 'The :attribute may not be greater than :max characters.',
             'number' => 'The :attribute must be a number.',
             'integer' => 'The :attribute must be an integer.',
+            'mimes' => 'The :attribute must be :mimes.',
         ];
     }
 
@@ -136,6 +154,7 @@ class MagazineController extends Controller
             'year_of_publication' => 'Tahun Terbit',
             'classification' => 'No. Klasifika',
             'place_of_origin' => 'Berasal dari',
+            'dokumen' => 'Dokumen',
             'note' => 'Keterangan',
         ];
     }

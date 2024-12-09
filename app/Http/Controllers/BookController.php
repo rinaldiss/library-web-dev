@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Exports\BookExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -47,17 +48,13 @@ class BookController extends Controller
     {
         try {
             $this->validate($request, [
-                'dokumen' => 'mimes:doc,docx,pdf,xls,xlsx,ppt,pptx',
+                'dokumen' => 'mimes:pdf',
             ], $this->messages(), $this->attributes());
             $dokumen = $request->dokumen;
             $nama_dokumen = 'FT' . date('YmdHis') . '.' . $dokumen->getClientOriginalExtension();
-            $path = $dokumen->move(public_path('file'), $nama_dokumen);
-
             $data = $request->all();
-            $data['dokumen'] = $nama_dokumen;
-
+            $data['dokumen'] = $request->dokumen->storeAs('dokumen-buku',$nama_dokumen);
             Book::create($data);
-
             return redirect()->route('admin.book')->with('success', 'Buku Induk Buku berhasil ditambahkan');
         } catch (\Exception $e) {
             dd($e);
@@ -80,14 +77,17 @@ class BookController extends Controller
             $id = Crypt::decrypt($id);
             $book = Book::find($id);
             $this->validate($request, [
-                'dokumen' => 'mimes:doc,docx,pdf,xls,xlsx,ppt,pptx',
+                'dokumen' => 'mimes:pdf',
             ], $this->rules(), $this->messages());
-            $dokumen = $request->dokumen;
-            $nama_dokumen = 'FT' . date('YmdHis') . '.' . $dokumen->getClientOriginalExtension();
-            $path = $dokumen->move(public_path('file'), $nama_dokumen);
-
             $data = $request->all();
-            $data['dokumen'] = $nama_dokumen;
+            if ($request->dokumen) {
+                $dokumen = $request->dokumen;
+                $nama_dokumen = 'FT' . date('YmdHis') . '.' . $dokumen->getClientOriginalExtension();
+                $data['dokumen'] = $request->dokumen->storeAs('dokumen-buku',$nama_dokumen);
+                if ($book->dokumen != null) {
+                    Storage::delete($book->dokumen);
+                }
+            }
             $book->update($data);
 
             return redirect()->route('admin.book')->with('success', 'Buku Induk Buku berhasi diubah');
@@ -109,6 +109,7 @@ class BookController extends Controller
         $id = Crypt::decrypt($id);
         $item = Book::find($id);
         if ($item) {
+            Storage::delete($item->dokumen);
             $item->delete();
             return response()->json(['success' => 'Item deleted successfully.']);
         } else {

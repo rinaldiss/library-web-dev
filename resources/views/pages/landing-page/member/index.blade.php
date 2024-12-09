@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Daftar Kunjungan')
+@section('title', 'Daftar Keanggotaan')
 
 @push('style')
     <link href="{{ asset('vendor/toastr/toastr.min.css') }}" rel="stylesheet">
@@ -15,10 +15,18 @@
                     <div class="col-lg-12">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Daftar Kunjungan</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Daftar Keanggotan</h1>
                             </div>
-                            <form class="user" action="{{ route('visitors.store') }}" method="POST">
+                            <form class="user" action="{{ route('members.store') }}" method="POST">
                                 @csrf
+                                <div class="form-group">
+                                    <input id="name" type="text" name="name" class="form-control form-control-user @error('name') is-invalid @enderror" placeholder="Nama">
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                                 <div class="form-group">
                                     <input id="phone" type="text" name="phone" class="form-control form-control-user @error('phone') is-invalid @enderror" placeholder="PHONE">
                                     @error('phone')
