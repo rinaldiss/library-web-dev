@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Loan;
 use App\Models\Magazine;
+use App\Models\Member;
 use App\Models\Regulation;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class LoanController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Loan::with('visitor')->orderBy('id', 'desc')->get();
+            $data = Loan::with('member')->orderBy('id', 'desc')->get();
             return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -27,10 +28,10 @@ class LoanController extends Controller
                         }
                     })
                     ->addColumn('peminjam', function($row){
-                        return $row->visitor->name;
+                        return $row->member->name;
                     })
                     ->addColumn('phone', function($row){
-                        return $row->visitor->phone;
+                        return $row->member->phone;
                     })
                     ->addColumn('type', function($row){
                         return $this->types()[$row->type];
@@ -77,11 +78,11 @@ class LoanController extends Controller
 
     public function create()
     {
-        $visitor = Visitor::where("is_verified",true)->get();
+        $member = Member::where("is_verified",true)->get();
         $book = Book::where('stock','>',0)->get();
         $magazine = Magazine::where('stock','>',0)->get();
         $regulation = Regulation::where('stock','>',0)->get();
-        return view('pages.admin.loan.create',compact("visitor","book","magazine","regulation"));
+        return view('pages.admin.loan.create',compact("member","book","magazine","regulation"));
     }
 
     public function store(Request $request)
@@ -89,7 +90,7 @@ class LoanController extends Controller
         $rules = $this->rules();
         $rules[$request->type."_id"] = "required";
         $this->validate($request, $rules, $this->messages(), $this->attributes());
-        $cekBorrowing = Loan::where("visitor_id",$request->visitor_id)->where("status","on_going")->first();
+        $cekBorrowing = Loan::where("member_id",$request->member_id)->where("status","on_going")->first();
         if (!empty($cekBorrowing)) {
             return redirect()->back()->withErrors(["failed" => "Anggota tersebut belum mengembalikan buku sebelumnya!"]);
         }
@@ -110,7 +111,7 @@ class LoanController extends Controller
             }
             $wa = new DashboardController();
             $message = "
-*Halo {$loan->visitor->name}*,
+*Halo {$loan->member->name}*,
 Berhasil Peminjaman
 Detail Peminjaman :
 =========================
@@ -120,7 +121,7 @@ Detail Peminjaman :
 *Tanggal Peminjaman:* ".date('d-m-Y H:i',strtotime($loan->loan_at))."
 =========================
 Terimakasih!*";            
-            $wa->sendMessage($loan->visitor->phone,$message);
+            $wa->sendMessage($loan->member->phone,$message);
         }
         return redirect()->route('admin.loan')->with('success', 'Peminjaman buku berhasil dilakukan');
     }
@@ -154,7 +155,7 @@ Terimakasih!*";
     private function rules()
     {
         return [
-            'visitor_id' => 'required',
+            'member_id' => 'required',
             'book_id' => '',
             'magazine_id' => '',
             'regulation_id' => '',
@@ -175,7 +176,7 @@ Terimakasih!*";
     private function attributes()
     {
         return [
-            'visitor_id' => 'Anggota',
+            'member_id' => 'Anggota',
             'book_id' => 'Buku',
             'magazine_id' => 'Majalah',
             'regulation_id' => 'Peraturan',

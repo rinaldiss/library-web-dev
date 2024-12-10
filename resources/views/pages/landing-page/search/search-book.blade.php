@@ -36,8 +36,8 @@ Pencarian Buku
                                                     <th>Pengarang</th>
                                                     <th>Penerbit</th>
                                                     <th>Tahun Terbit</th>
-                                                    <th>Dokumen</th>
                                                     <th>Stock</th>
+                                                    <th>Dokumen</th>
                                                     <th width="30">Aksi</th>
                                                 </tr>
                                             </thead>
@@ -69,11 +69,11 @@ Pencarian Buku
                     { data: 'author', name: 'author' },
                     { data: 'publisher', name: 'publisher' },
                     { data: 'year_of_publication', name: 'year_of_publication' },
+                    { data: 'stock', name: 'stock'},
                     { 
                         data: 'dokumen', 
                         name: 'dokumen',
                     },
-                    { data: 'stock', name: 'stock'},
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ],
                 language: {

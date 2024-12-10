@@ -95,7 +95,9 @@ class RegulationController extends Controller
         $id = Crypt::decrypt($id);
         $item = Regulation::find($id);
         if ($item) {
-            Storage::delete($item->dokumen);
+            if ($item->dokumen != null) {
+                Storage::delete($item->dokumen);
+            }            
             $item->delete();
             return response()->json(['success' => 'Item deleted successfully.']);
         } else {

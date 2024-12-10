@@ -20,13 +20,13 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label for="title">Peminjam</label>
-                        <select name="visitor_id" id="visitor" class="form-control @error('visitor_id') is-invalid @enderror">
+                        <select name="member_id" id="member" class="form-control @error('member_id') is-invalid @enderror">
                             <option value="">--Pilih Peminjam--</option>
-                            @foreach ($visitor as $item)
+                            @foreach ($member as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
                         </select>
-                        @error('visitor_id')
+                        @error('member_id')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

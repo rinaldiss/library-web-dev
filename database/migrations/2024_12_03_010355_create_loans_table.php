@@ -2,6 +2,7 @@
 
 use App\Models\Book;
 use App\Models\Magazine;
+use App\Models\Member;
 use App\Models\Regulation;
 use App\Models\Visitor;
 use Illuminate\Database\Migrations\Migration;
@@ -20,7 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(Book::class)->nullable();
             $table->foreignIdFor(Magazine::class)->nullable();
             $table->foreignIdFor(Regulation::class)->nullable();
-            $table->foreignIdFor(Visitor::class);
+            $table->foreignIdFor(Member::class);
             $table->enum("type",["book","magazine","regulation"]);
             $table->timestamp("loan_at")->default(now());
             $table->timestamp("expired_at")->default(now());

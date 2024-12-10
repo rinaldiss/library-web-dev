@@ -23,7 +23,7 @@
                         <select name="loan_id" onchange="return showDetail()" id="loan_id" class="form-control @error('loan_id') is-invalid @enderror">
                             <option value="">--Pilih Data Peminjaman--</option>
                             @foreach ($loan as $item)
-                                <option value="{{ $item->id }}">{{ $item->visitor->name }}</option>
+                                <option value="{{ $item->id }}">{{ $item->member->name }}</option>
                             @endforeach
                         </select>
                         @error('loan_id')

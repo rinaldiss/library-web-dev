@@ -16,7 +16,7 @@ class ReversionController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Reversion::with('loan.visitor')->orderBy('id', 'desc')->get();
+            $data = Reversion::with('loan.member')->orderBy('id', 'desc')->get();
             return DataTables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -24,10 +24,10 @@ class ReversionController extends Controller
                         return '<button class="btn btn-success btn-sm" disabled>Completed</button>';
                     })
                     ->addColumn('peminjam', function($row){
-                        return $row->loan->visitor->name;
+                        return $row->loan->member->name;
                     })
                     ->addColumn('phone', function($row){
-                        return $row->loan->visitor->phone;
+                        return $row->loan->member->phone;
                     })
                     ->addColumn('type', function($row){
                         return $this->types()[$row->loan->type];
@@ -105,14 +105,14 @@ class ReversionController extends Controller
                 ]
             ]);
         }
-        $loan = Loan::with('visitor')->where("status","on_going")->get();
+        $loan = Loan::with('member')->where("status","on_going")->get();
         return view('pages.admin.reversion.create',compact("loan"));
     }
 
     public function store(Request $request)
     {
         $this->validate($request, $this->rules(), $this->messages(), $this->attributes());
-        $loan = Loan::with('visitor')->where('status','on_going')->find($request->loan_id);
+        $loan = Loan::with('member')->where('status','on_going')->find($request->loan_id);
         if (empty($loan)) {
             return redirect()->back()->withErrors(["failed" => "Data peminjaman tidak ditemukan!"]);
         }
@@ -137,7 +137,7 @@ class ReversionController extends Controller
             }
             $wa = new DashboardController();
             $message = "
-*Halo {$loan->visitor->name}*,
+*Halo {$loan->member->name}*,
 Berhasil Pengembalian
 Detail Pengembalian :
 =========================
@@ -148,7 +148,7 @@ Detail Pengembalian :
 *Denda:* ".number_format($reversion->penalty,0,',','.')."
 =========================
 Terimakasih!*";            
-            $wa->sendMessage($loan->visitor->phone,$message);
+            $wa->sendMessage($loan->member->phone,$message);
         }
         return redirect()->route('admin.reversion')->with('success', 'Peminjaman buku berhasil dilakukan');
     }

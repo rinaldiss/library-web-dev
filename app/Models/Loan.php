@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Loan extends Model
 {
     use HasFactory;
-    protected $fillable = ["visitor_id","book_id","magazine_id","regulation_id","type","loan_at","expired_at","status"];
+    protected $fillable = ["member_id","book_id","magazine_id","regulation_id","type","loan_at","expired_at","status"];
 
     /**
      * Get the visitor that owns the Loan
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function visitor()
+    public function member()
     {
-        return $this->belongsTo(Visitor::class);
+        return $this->belongsTo(Member::class);
     }
 }
