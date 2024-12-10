@@ -68,7 +68,9 @@ class RegulationController extends Controller
     {
         $id = Crypt::decrypt($id);
         $regulation = Regulation::find($id);
-        $this->validate($request, $this->rules(), $this->messages(), $this->attributes());
+        $rules = $this->rules();
+        $rules["dokumen"] = "mimes:pdf";
+        $this->validate($request, $rules, $this->messages(), $this->attributes());
         $data = $request->all();
         if ($request->dokumen) {
             $dokumen = $request->dokumen;
@@ -125,6 +127,7 @@ class RegulationController extends Controller
             'classification' => 'nullable|max:255',
             'place_of_origin' => 'nullable|max:255',
             'note' => 'nullable|max:1000',
+            'dokumen' => 'required|mimes:pdf',
             'stock' => 'required|numeric',
         ];
     }

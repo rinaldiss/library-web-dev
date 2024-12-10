@@ -67,7 +67,9 @@ class BookController extends Controller
     {
         $id = Crypt::decrypt($id);
         $book = Book::find($id);
-        $this->validate($request, $this->rules(), $this->messages());
+        $rules = $this->rules();
+        $rules["dokumen"] = "mimes:pdf";
+        $this->validate($request, $rules, $this->messages());
         $data = $request->all();
         if ($request->dokumen) {
             $dokumen = $request->dokumen;
@@ -126,7 +128,7 @@ class BookController extends Controller
             'place_of_origin' => 'nullable|max:255',
             'stock' => 'numeric|required',
             'note' => 'nullable|max:1000',
-            'dokumen' => 'mimes:pdf',
+            'dokumen' => 'required|mimes:pdf',
         ];
     }
 

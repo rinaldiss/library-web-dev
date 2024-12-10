@@ -68,7 +68,9 @@ class MagazineController extends Controller
     {
         $id = Crypt::decrypt($id);
         $magazine = Magazine::find($id);
-        $this->validate($request, $this->rules(), $this->messages(), $this->attributes());
+        $rules = $this->rules();
+        $rules["dokumen"] = "mimes:pdf";
+        $this->validate($request, $rules, $this->messages(), $this->attributes());
         $data = $request->all();
         if ($request->dokumen) {
             $dokumen = $request->dokumen;
@@ -125,7 +127,7 @@ class MagazineController extends Controller
             'year_of_publication' => 'nullable|integer',
             'classification' => 'nullable|max:255',
             'place_of_origin' => 'nullable|max:255',
-            'dokumen' => 'mimes:pdf',
+            'dokumen' => 'required|mimes:pdf',
             'note' => 'nullable|max:1000',
             'stock' => 'required|numeric',
         ];
