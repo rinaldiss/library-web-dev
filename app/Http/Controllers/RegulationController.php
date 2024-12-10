@@ -125,6 +125,7 @@ class RegulationController extends Controller
             'classification' => 'nullable|max:255',
             'place_of_origin' => 'nullable|max:255',
             'note' => 'nullable|max:1000',
+            'stock' => 'required|numeric',
         ];
     }
 
@@ -153,6 +154,7 @@ class RegulationController extends Controller
             'classification' => 'No. Klasifika',
             'place_of_origin' => 'Berasal dari',
             'note' => 'Keterangan',
+            'stock' => 'Stok',
         ];
     }
 }

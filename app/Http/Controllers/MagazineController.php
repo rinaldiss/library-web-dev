@@ -127,6 +127,7 @@ class MagazineController extends Controller
             'place_of_origin' => 'nullable|max:255',
             'dokumen' => 'mimes:pdf',
             'note' => 'nullable|max:1000',
+            'stock' => 'required|numeric',
         ];
     }
 
@@ -158,6 +159,7 @@ class MagazineController extends Controller
             'place_of_origin' => 'Berasal dari',
             'dokumen' => 'Dokumen',
             'note' => 'Keterangan',
+            'stock' => 'Stok',
         ];
     }
 }

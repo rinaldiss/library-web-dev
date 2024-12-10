@@ -46,20 +46,13 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $this->validate($request, [
-                'dokumen' => 'mimes:pdf',
-            ], $this->messages(), $this->attributes());
-            $dokumen = $request->dokumen;
-            $nama_dokumen = 'FT' . date('YmdHis') . '.' . $dokumen->getClientOriginalExtension();
-            $data = $request->all();
-            $data['dokumen'] = $request->dokumen->storeAs('dokumen-buku',$nama_dokumen);
-            Book::create($data);
-            return redirect()->route('admin.book')->with('success', 'Buku Induk Buku berhasil ditambahkan');
-        } catch (\Exception $e) {
-            dd($e);
-            return redirect()->route('admin.book')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-        }
+        $this->validate($request,$this->rules(), $this->messages(), $this->attributes());
+        $dokumen = $request->dokumen;
+        $nama_dokumen = 'FT' . date('YmdHis') . '.' . $dokumen->getClientOriginalExtension();
+        $data = $request->all();
+        $data['dokumen'] = $request->dokumen->storeAs('dokumen-buku',$nama_dokumen);
+        Book::create($data);
+        return redirect()->route('admin.book')->with('success', 'Buku Induk Buku berhasil ditambahkan');
     }
 
 
@@ -72,29 +65,21 @@ class BookController extends Controller
 
     public function update(Request $request, $id)
     {
-        try {
-
-            $id = Crypt::decrypt($id);
-            $book = Book::find($id);
-            $this->validate($request, [
-                'dokumen' => 'mimes:pdf',
-            ], $this->rules(), $this->messages());
-            $data = $request->all();
-            if ($request->dokumen) {
-                $dokumen = $request->dokumen;
-                $nama_dokumen = 'FT' . date('YmdHis') . '.' . $dokumen->getClientOriginalExtension();
-                $data['dokumen'] = $request->dokumen->storeAs('dokumen-buku',$nama_dokumen);
-                if ($book->dokumen != null) {
-                    Storage::delete($book->dokumen);
-                }
+        $id = Crypt::decrypt($id);
+        $book = Book::find($id);
+        $this->validate($request, $this->rules(), $this->messages());
+        $data = $request->all();
+        if ($request->dokumen) {
+            $dokumen = $request->dokumen;
+            $nama_dokumen = 'FT' . date('YmdHis') . '.' . $dokumen->getClientOriginalExtension();
+            $data['dokumen'] = $request->dokumen->storeAs('dokumen-buku',$nama_dokumen);
+            if ($book->dokumen != null) {
+                Storage::delete($book->dokumen);
             }
-            $book->update($data);
-
-            return redirect()->route('admin.book')->with('success', 'Buku Induk Buku berhasi diubah');
-        } catch (\Exception $e) {
-            dd($e);
-            return redirect()->route('admin.book')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+        $book->update($data);
+
+        return redirect()->route('admin.book')->with('success', 'Buku Induk Buku berhasi diubah');
     }
 
     public function show($id)
@@ -139,7 +124,9 @@ class BookController extends Controller
             'year_of_publication' => 'nullable|integer',
             'classification' => 'nullable|max:255',
             'place_of_origin' => 'nullable|max:255',
+            'stock' => 'numeric|required',
             'note' => 'nullable|max:1000',
+            'dokumen' => 'mimes:pdf',
         ];
     }
 
@@ -169,6 +156,8 @@ class BookController extends Controller
             'classification' => 'No. Klasifika',
             'place_of_origin' => 'Berasal dari',
             'note' => 'Keterangan',
+            'stock' => 'Stok',
+            'dokumen' => 'Dokumen',
         ];
     }
 }

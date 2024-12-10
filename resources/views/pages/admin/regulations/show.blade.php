@@ -82,6 +82,12 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
+                    <label for="stock">Stok</label>
+                    <input type="text" class="form-control" disabled value="{{ old('stock', $regulation->stock ?? '') }}">                    
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
                     <label>Dokumen</label>
                     <br>
                     <a href="{{ asset('storage/' . $regulation->dokumen) }}" class="btn btn-primary btn-sm float-end" download>Download</a>

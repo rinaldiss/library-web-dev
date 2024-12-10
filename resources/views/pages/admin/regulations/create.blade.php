@@ -150,6 +150,17 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
+                        <label for="stock">Stok</label>
+                        <input type="text" class="form-control" name="stock" value="{{ old('stock', $regulation->stock ?? '') }}">
+                        @error('stock')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
                         <label for="dokumen">Dokumen</label>
                         <input type="file" class="form-control" name="dokumen" value="{{ old('dokumen') }}">
                         @error('dokumen')

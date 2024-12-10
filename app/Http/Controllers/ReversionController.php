@@ -33,7 +33,7 @@ class ReversionController extends Controller
                         return $this->types()[$row->loan->type];
                     })
                     ->addColumn('returned_at', function($row){
-                        return date('d-m-Y H:i:s',strtotime($row->returned_at));
+                        return date('d-m-Y',strtotime($row->returned_at));
                     })
                     ->addColumn('amount_penalty', function($row){
                         return "Rp ". number_format($row->amount_penalty,0,',','.');

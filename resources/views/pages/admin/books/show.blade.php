@@ -94,6 +94,12 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
+                    <label for="stock">Stok</label>
+                    <input type="text" class="form-control" disabled value="{{ old('stock', $book->stock ?? '') }}">                   
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
                     <label>Dokumen</label>
                     <br>
                     <a href="{{ asset('storage/' . $book->dokumen) }}" class="btn btn-primary btn-sm float-end" download>Download</a>
