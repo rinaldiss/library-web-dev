@@ -23,7 +23,7 @@ Pencarian Peraturan
                                 <span class="text">Kembali</span>
                             </a>
                             <div class="text-center">
-                                <h1 class="h2 text-gray-900 mb-4">Pencarian Peraturan</h1>
+                                <h1 class="h2 text-gray-900 mb-4">Pencarian Berkas Hukum</h1>
                             </div>
                             <div class="card shadow mb-4">
                                 <div class="card-body">

@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-dark">Tambah Peraturan</h1>
+    <h1 class="h3 mb-0 text-dark">Tambah Berkas Hukum</h1>
 </div>
 
 <div class="card shadow mb-4">

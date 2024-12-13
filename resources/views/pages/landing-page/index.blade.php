@@ -43,7 +43,7 @@
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-md font-weight-bold text-white text-uppercase mb-1">
-                                                    Daftar Keanggotaan
+                                                    Pendaftaran Keanggotaan
                                                 </div>
                                             </div>
                                             <div class="col-auto">
@@ -63,7 +63,7 @@
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-md font-weight-bold text-white text-uppercase mb-1">
-                                                    Daftar Kunjungan
+                                                    Pendaftaran Kunjungan
                                                 </div>
                                             </div>
                                             <div class="col-auto">

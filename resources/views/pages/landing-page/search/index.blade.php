@@ -23,7 +23,7 @@
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-md font-weight-bold text-white text-uppercase mb-1">
-                                                    Peraturan
+                                                    Berkas Hukum
                                                 </div>
                                             </div>
                                             <div class="col-auto">

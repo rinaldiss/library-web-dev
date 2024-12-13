@@ -28,7 +28,7 @@
     <li class="nav-item  {{ Request::is('admin/peraturan*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.regulation') }}">
             <i class="fas fa-fw fa-gavel"></i>
-            <span>Peraturan</span>
+            <span>Berkas Hukum</span>
         </a>
     </li>
 
