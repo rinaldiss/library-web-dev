@@ -128,9 +128,9 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="classification">No. Klasifika</label>
-                        <input type="text" class="form-control @error('classification') is-invalid @enderror" id="classification" name="classification" value="{{ old('classification') }}">
-                        @error('classification')
+                        <label for="place_of_origin">Berasal dari</label>
+                        <input type="text" class="form-control @error('place_of_origin') is-invalid @enderror" id="place_of_origin" name="place_of_origin" value="{{ old('place_of_origin') }}">
+                        @error('place_of_origin')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -139,9 +139,9 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="place_of_origin">Berasal dari</label>
-                        <input type="text" class="form-control @error('place_of_origin') is-invalid @enderror" id="place_of_origin" name="place_of_origin" value="{{ old('place_of_origin') }}">
-                        @error('place_of_origin')
+                        <label for="stock">Stok</label>
+                        <input type="text" class="form-control" name="stock" value="{{ old('stock') }}">
+                        @error('stock')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -161,9 +161,9 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="stock">Stok</label>
-                        <input type="text" class="form-control" name="stock" value="{{ old('stock') }}">
-                        @error('stock')
+                        <label for="classification">No. Rak</label>
+                        <input type="text" class="form-control @error('classification') is-invalid @enderror" id="classification" name="classification" value="{{ old('classification') }}">
+                        @error('classification')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

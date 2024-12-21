@@ -34,11 +34,10 @@ Pencarian Majalah
                                                     <th width="25">No</th>
                                                     <th>Judul</th>
                                                     <th>Pengarang</th>
-                                                    <th>Penerbit</th>
-                                                    <th>Tahun Terbit</th>
                                                     <th>Stock</th>
+                                                    <th>No. Rak</th>
                                                     <th>Dokumen</th>
-                                                    <th width="30">Aksi</th>
+                                                    <th width="30">Baca</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -67,9 +66,8 @@ Pencarian Majalah
                     { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { data: 'title', name: 'title' },
                     { data: 'author', name: 'author' },
-                    { data: 'publisher', name: 'publisher' },
-                    { data: 'year_of_publication', name: 'year_of_publication' },
                     { data: 'stock', name: 'stock' },
+                    { data: 'classification', name: 'classification'},
                     { data: 'dokumen', name: 'dokumen' },
                     { data: 'action', name: 'action', orderable: false, searchable: false }
                 ],

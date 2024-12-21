@@ -13,6 +13,6 @@ class MagazineSeeder extends Seeder
      */
     public function run(): void
     {
-        Magazine::factory(50)->create();
+        Magazine::factory(10)->create();
     }
 }

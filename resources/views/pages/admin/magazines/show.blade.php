@@ -76,12 +76,6 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label>No. Klasifika</label>
-                    <input type="text" class="form-control" disabled value="{{ $magazine->classification }}">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
                     <label>Berasal dari</label>
                     <input type="text" class="form-control" disabled value="{{ $magazine->place_of_origin }}">
                 </div>
@@ -96,6 +90,12 @@
                 <div class="form-group">
                     <label for="stock">Stok</label>
                     <input type="text" class="form-control" disabled value="{{ old('stock', $magazine->stock ?? '') }}">                    
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>No. Rak</label>
+                    <input type="text" class="form-control" disabled value="{{ $magazine->classification }}">
                 </div>
             </div>
             <div class="col-md-4">

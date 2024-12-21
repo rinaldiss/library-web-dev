@@ -20,16 +20,16 @@ class DashboardController extends Controller
     }
 
     public function remind(){
-        $data = Loan::with('visitor')->where('status','on_going')->get();
+        $data = Loan::with('member')->where('status','on_going')->get();
         foreach ($data as $item) {
             if (date('Y-m-d') == date('Y-m-d',strtotime($item->expired_at." - 1 days"))) {
         $message = "
-*Halo {$item->visitor->name}*,
+*Halo {$item->member->name}*,
 Reminder!!
-Segera Lakuakn Pengembalian :
+Segera Lakukan Pengembalian Sebelum Tanggal ".date('d-m-Y',strtotime($item->expired_at))."
 =========================
 Terimakasih!*";            
-$this->sendMessage($item->visitor->phone,$message);
+$this->sendMessage($item->member->phone,$message);
             }
         }
                 return true;        

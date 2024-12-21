@@ -11,6 +11,12 @@
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-dark">Anggota</h1>
+    <a href="{{ route('admin.regulation.export') }}" class="btn btn-sm btn-primary btn-icon-split">
+        <span class="icon text-white-50">
+            <i class="fas fa-download"></i>
+        </span>
+        <span class="text">Export</span>
+    </a>
 </div>
 
 <div class="card shadow mb-4">

@@ -13,6 +13,6 @@ class RegulationSeeder extends Seeder
      */
     public function run(): void
     {
-        Regulation::factory(50)->create();
+        Regulation::factory(10)->create();
     }
 }

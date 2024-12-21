@@ -82,7 +82,7 @@
                 </div>
                 <div class="col-12 d-none" id="peraturan">
                     <div class="form-group">
-                        <label for="title">Peraturan</label>
+                        <label for="title">Berkas Hukum</label>
                         <select name="regulation_id" class="form-control @error('regulation_id') is-invalid @enderror">
                             <option value="">--Pilih Peraturan--</option>
                             @foreach ($regulation as $item)

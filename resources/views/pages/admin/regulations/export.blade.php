@@ -10,7 +10,7 @@
             <th>Penerbit</th>
             <th>Tempat Terbit</th>
             <th>Tahun Terbit</th>
-            <th>No. Klasifika</th>
+            <th>No. Rak</th>
             <th>Berasal dari</th>
             <th>Keterangan</th>
         </tr>

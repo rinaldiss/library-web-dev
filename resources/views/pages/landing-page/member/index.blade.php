@@ -28,7 +28,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <input id="phone" type="text" name="phone" class="form-control form-control-user @error('phone') is-invalid @enderror" placeholder="PHONE">
+                                    <input id="phone" type="text" name="phone" class="form-control form-control-user @error('phone') is-invalid @enderror" placeholder="Telepon">
                                     @error('phone')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

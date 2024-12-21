@@ -96,8 +96,9 @@ class LoanController extends Controller
         }
         $data = $request->all();
         $data['status'] = "on_going";
-        $data['expired_at'] = date('Y-m-d H:i',strtotime(" + $request->lama_pinjam days"));
+        $data['expired_at'] = date('Y-m-d H:i',strtotime($request->loan_at." + $request->lama_pinjam days"));
         $loan = Loan::create($data);
+        $day = date_diff(date_create(date('Y-m-d H:i:s',strtotime($loan->loan_at))),date_create(date('Y-m-d H:i:s',strtotime($loan->expired_at))));
         if ($loan) {
             if ($loan->type == "book") {
                 $dt = Book::where("id",$loan->book_id)->first();
@@ -119,6 +120,8 @@ Detail Peminjaman :
 *Judul:* ".$dt->title."
 *Pengarang:* ".$dt->title."
 *Tanggal Peminjaman:* ".date('d-m-Y H:i',strtotime($loan->loan_at))."
+*Lama Peminjaman:* ".$day->days." Hari
+*Tanggal Pengembalian:* ".date('d-m-Y H:i',strtotime($loan->expired_at))."
 =========================
 Terimakasih!*";            
             $wa->sendMessage($loan->member->phone,$message);

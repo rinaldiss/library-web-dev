@@ -10,6 +10,7 @@ use App\Models\Reversion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Yajra\DataTables\Facades\DataTables;
+use Carbon\Carbon;
 
 class ReversionController extends Controller
 {
@@ -121,6 +122,7 @@ class ReversionController extends Controller
             'penalty' => $request->amount_penalty,
             'returned_at' => $request->returned_at,
         ]);
+        $day = date_diff(date_create(date('Y-m-d H:i:s',strtotime($loan->loan_at))),date_create(date('Y-m-d H:i:s',strtotime($loan->expired_at))));
         if ($reversion) {
             $loan->update([
                 "status" => "finished"
@@ -136,16 +138,27 @@ class ReversionController extends Controller
                 $dt->increment("stock",1);
             }
             $wa = new DashboardController();
-            $message = "
+            $loanDate = Carbon::parse($loan->loan_at); // Tanggal peminjaman
+$returnedDate = Carbon::parse($reversion->returned_at); // Tanggal pengembalian
+
+// Menghitung selisih antara dua tanggal
+$duration = $loanDate->diff($returnedDate);
+
+// Menghitung lama peminjaman dalam hari
+$day = $duration->days; // Pastikan menggunakan $duration->days, bukan $duration saja
+
+$message = "
 *Halo {$loan->member->name}*,
 Berhasil Pengembalian
 Detail Pengembalian :
 =========================
 *Jenis:* ".$loan->type."
 *Judul:* ".$dt->title."
-*Pengarang:* ".$dt->title."
-*Tanggal Pengembalian:* ".date('d-m-Y H:i',strtotime($reversion->returned_at))."
-*Denda:* ".number_format($reversion->penalty,0,',','.')."
+*Pengarang:* ".$dt->author."
+*Tanggal Peminjaman:* ".date('d-m-Y H:i', strtotime($loan->loan_at))."
+*Tanggal Pengembalian:* ".date('d-m-Y H:i', strtotime($reversion->returned_at))."
+*Lama Peminjaman:* {$day} Hari
+*Denda:* ".number_format($reversion->penalty, 0, ',', '.')."
 =========================
 Terimakasih!*";            
             $wa->sendMessage($loan->member->phone,$message);
